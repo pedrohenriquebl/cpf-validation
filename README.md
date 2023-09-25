@@ -35,10 +35,6 @@ If you'd like to contribute to this project, please follow these steps:
 5. Push to the branch (`git push origin feature/your-feature`)
 6. Create a pull request
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgments
 
 - The CPF validation algorithm used in this code is based on [specifications provided by the Brazilian government](https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/cadastro-de-pessoas-fisicas-cpf).
