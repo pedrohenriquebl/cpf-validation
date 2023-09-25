@@ -6,6 +6,12 @@ function CPF (cpf) {
     })
 }
 
+function CreateCPF () {
+    CPF.call(this,'')
+}
+
+CreateCPF.prototype = Object.create(CPF.prototype);
+
 CPF.prototype.validateCpf = function () {
        try {
            if (cpf.sanitizedCpf.length !== 11) {
@@ -28,7 +34,7 @@ CPF.prototype.validateCpf = function () {
        }
 }
 
-CPF.prototype.calculateVerificationDigit = (cpf) => {
+CPF.prototype.calculateVerificationDigit = function(cpf) {
     const cpfArray = Array.from(cpf)
     let counter = cpfArray.length + 1;
 
@@ -42,15 +48,38 @@ CPF.prototype.calculateVerificationDigit = (cpf) => {
     return digit > 9 ? 0 : digit;
 }
 
-CPF.prototype.isSequence = () => {
+CPF.prototype.isSequence = function() {
     const sequence = cpf.sanitizedCpf[0].repeat(cpf.sanitizedCpf.length)
     return (sequence === cpf.sanitizedCpf);
 }
 
+CreateCPF.prototype.generateCpf = function() {
+    const partialCpf = this.generateFirstNineCpfNumbers();
+    partialCpf.push(this.calculateVerificationDigit(partialCpf));
+    partialCpf.push(this.calculateVerificationDigit(partialCpf));
+    return this.CpfMask(partialCpf.toString());
+}
+
+CreateCPF.prototype.generateFirstNineCpfNumbers = function() {
+    const MAX_COUNTER = 8;
+    let cpfArray = [];
+
+    for (i = 0; i <= MAX_COUNTER; i++) {
+        cpfArray.push(Math.floor(Math.random() * (9 - 0) + 1))
+    }
+
+    return cpfArray;
+}
+
+CreateCPF.prototype.CpfMask = function(cpf) {
+    cpf=cpf.replace(/\D/g,"")
+    cpf=cpf.replace(/(\d{3})(\d)/,"$1.$2")
+    cpf=cpf.replace(/(\d{3})(\d)/,"$1.$2")
+    cpf=cpf.replace(/(\d{3})(\d{1,2})$/,"$1-$2")
+    return cpf
+}
+
 const cpf = new CPF('705.484.450-52');
-console.log(cpf.validateCpf());
-
-
-
-
-
+const newCpf = new CreateCPF();
+console.log(newCpf.generateCpf());
+console.log(newCpf.validateCpf());

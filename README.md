@@ -1,6 +1,6 @@
 # CPF Validation Code
 
-This is a simple code to study and understand how to validate Brazilian CPF (Cadastro de Pessoas Físicas) numbers. It's intended for educational purposes to help understand the validation process.
+This is a simple code to study and understand how to validate and Create Brazilian CPF (Cadastro de Pessoas Físicas) numbers. It's intended for educational purposes to help understand the validation process.
 
 ## How CPF Validation Works
 
@@ -17,6 +17,12 @@ git clone https://github.com/pedrohenriquebl/cpf-validation.git
 const cpf = new CPF('705.484.450-52');
 console.log(cpf.validateCpf());
 ```
+3. Creating CPF
+``` bash
+const newCpf = new CreateCPF();
+console.log(newCpf.generateCpf());
+console.log(newCpf.validateCpf()) verify if its a valid CPF generated number;
+``
 
 ## Contributing
 
