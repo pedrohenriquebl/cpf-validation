@@ -87,8 +87,8 @@ CreateCPF.prototype.CpfMask = function(cpf) {
 
 CreateCNPJ.prototype.generateCnpj = function() {
     const partialCnpj = this.generateFirstTwelveCnpjNumbers();
-    partialCnpj.push(this.calculateVerificationDigitCnpj(partialCnpj));
-    partialCnpj.push(this.calculateVerificationDigitCnpj(partialCnpj));
+    partialCnpj.push(this.calculateVerificationDigitOneCnpj(partialCnpj));
+    partialCnpj.push(this.calculateVerificationDigitTwoCnpj(partialCnpj));
     return this.CnpjMask(partialCnpj.toString());
 }
 
@@ -98,13 +98,25 @@ CreateCNPJ.prototype.generateFirstTwelveCnpjNumbers = function() {
     return [...randomDigits, 0, 0, 0, 1];
 }
 
-CreateCNPJ.prototype.calculateVerificationDigitCnpj = function(cnpj) {
+CreateCNPJ.prototype.calculateVerificationDigitOneCnpj = function(cnpj) {
     const cnpjArray = Array.from(cnpj)
-    let counter = cnpjArray.length + 1;
+    const weight = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
 
-    const total = cnpjArray.reduce((accumulator, currentValue ) => {
-        accumulator += (counter * Number(currentValue))
-        counter--;
+    const total = cnpjArray.reduce((accumulator, currentValue, index) => {
+        accumulator += (currentValue * weight[index])
+        return accumulator;
+    },0)
+
+    const digit = 11 - (total % 11)
+    return digit > 9 ? 0 : digit;
+}
+
+CreateCNPJ.prototype.calculateVerificationDigitTwoCnpj = function(cnpj) {
+    const cnpjArray = Array.from(cnpj)
+    const weight = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+
+    const total = cnpjArray.reduce((accumulator, currentValue, index) => {
+        accumulator += (currentValue * weight[index])
         return accumulator;
     },0)
 
