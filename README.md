@@ -1,10 +1,10 @@
-# CPF Validation Code
+# CPF/CNPJ Validation/Generator Code
 
 This is a simple code to study and understand how to validate and Create Brazilian CPF (Cadastro de Pessoas Físicas) numbers. It's intended for educational purposes to help understand the validation process.
 
-## How CPF Validation Works
+## How CPF/CNPJ Validation Works
 
-The Brazilian CPF is a unique identifier for individuals. It consists of 11 digits in the format `XXX.XXX.XXX-XX`. This code checks if a given CPF number is valid according to the CPF algorithm.
+The Brazilian CPF/CNPJ is a unique identifier for individuals/companys. It consists of 11/14 digits in the format `XXX.XXX.XXX-XX`/`XX.XXX.XXX/XXXX-XX`. This code checks if a given CPF/CNPJ number is valid according to the CPF/CNPJ algorithm.
 
 ## Usage
 
