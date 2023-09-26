@@ -12,6 +12,12 @@ function CreateCPF () {
 
 CreateCPF.prototype = Object.create(CPF.prototype);
 
+function CreateCNPJ () {
+    CPF.call(this,'')
+}
+
+CreateCNPJ.prototype = Object.create(CPF.prototype)
+
 CPF.prototype.validateCpf = function () {
        try {
            if (cpf.sanitizedCpf.length !== 11) {
@@ -65,7 +71,7 @@ CreateCPF.prototype.generateFirstNineCpfNumbers = function() {
     let cpfArray = [];
 
     for (i = 0; i <= MAX_COUNTER; i++) {
-        cpfArray.push(Math.floor(Math.random() * (9 - 0) + 1))
+        cpfArray.push(Math.floor(Math.random() * (9) + 1))
     }
 
     return cpfArray;
@@ -79,7 +85,45 @@ CreateCPF.prototype.CpfMask = function(cpf) {
     return cpf
 }
 
+CreateCNPJ.prototype.generateCnpj = function() {
+    const partialCnpj = this.generateFirstTwelveCnpjNumbers();
+    partialCnpj.push(this.calculateVerificationDigitCnpj(partialCnpj));
+    partialCnpj.push(this.calculateVerificationDigitCnpj(partialCnpj));
+    return this.CnpjMask(partialCnpj.toString());
+}
+
+CreateCNPJ.prototype.generateFirstTwelveCnpjNumbers = function() {
+    const randomDigits = [...Array(8)].map(() => Math.floor(Math.random() * 10));
+
+    return [...randomDigits, 0, 0, 0, 1];
+}
+
+CreateCNPJ.prototype.calculateVerificationDigitCnpj = function(cnpj) {
+    const cnpjArray = Array.from(cnpj)
+    let counter = cnpjArray.length + 1;
+
+    const total = cnpjArray.reduce((accumulator, currentValue ) => {
+        accumulator += (counter * Number(currentValue))
+        counter--;
+        return accumulator;
+    },0)
+
+    const digit = 11 - (total % 11)
+    return digit > 9 ? 0 : digit;
+}
+
+CreateCNPJ.prototype.CnpjMask = function(cnpj) {
+    cnpj=cnpj.replace(/\D/g,"")
+    cnpj=cnpj.replace(/(\d{2})(\d)/,"$1.$2")
+    cnpj=cnpj.replace(/(\d{3})(\d)/,"$1.$2")
+    cnpj=cnpj.replace(/(\d{3})(\d)/,"$1/$2")
+    cnpj=cnpj.replace(/(\d{4})(\d{1,2})$/,"$1-$2")
+    return cnpj;
+}
+
 const cpf = new CPF('705.484.450-52');
 const newCpf = new CreateCPF();
 console.log(newCpf.generateCpf());
 console.log(newCpf.validateCpf());
+const cnpj = new CreateCNPJ();
+console.log(cnpj.generateCnpj());
